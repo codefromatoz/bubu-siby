@@ -1173,6 +1173,22 @@ body {
     justify-content: center;
   }
 
+  /* -------- CODA NOTE FIX MOBILE -------- */
+
+  .band-coda {
+    overflow: hidden; /* sicurezza extra */
+  }
+
+  .coda-note {
+    transform: rotate(-2deg); /* niente spinta laterale */
+    max-width: 260px;
+    margin: 24px auto 0;
+    font-size: 14px;
+    line-height: 1.35;
+    opacity: 0.5;
+    text-align: center;
+  }
+
   /* diario swipe affordance */
   .sticky-row.diary-carousel {
     touch-action: pan-y; /* permette swipe orizzontale senza bloccare scroll */
@@ -1186,6 +1202,52 @@ body {
 
   .diary-next {
     display: none;
+  }
+
+  /* ============================
+   BACK TO TOP BUTTON
+   ============================ */
+
+  .back-to-top {
+    position: fixed;
+    bottom: 24px;
+    right: 18px;
+    background: #e6d1b9;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 18px 12px;
+    font-size: 16px;
+    color: rgba(42, 36, 31, 0.7);
+    box-shadow:
+      0 4px 0 rgba(0, 0, 0, 0.08),
+      0 10px 20px rgba(0, 0, 0, 0.18);
+    transform: rotate(-3deg);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+    z-index: 999;
+  }
+
+  .back-to-top.visible {
+    opacity: 0.85;
+    pointer-events: auto;
+    transform: rotate(-3deg) translateY(0);
+  }
+
+  .back-to-top:hover {
+    opacity: 1;
+    transform: rotate(-3deg) translateY(-3px);
+  }
+
+  @media (max-width: 768px) {
+    .back-to-top {
+      font-size: 14px;
+      padding: 8px 14px 10px;
+      bottom: 18px;
+      right: 14px;
+    }
   }
 
   /* ============================

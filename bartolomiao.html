@@ -24,7 +24,7 @@
   <body>
     <header class="site-header">
       <div class="wrap header-inner">
-        <div class="site-title tag">
+        <div class="site-title tag" id="menuToggle">
           <span class="underline">Bubu & Siby</span>
         </div>
 
@@ -177,5 +177,66 @@
         <p class="hand footer-text">Viviamo qui.</p>
       </footer>
     </main>
+
+    <button class="back-to-top hand" aria-label="Torna su">
+      riportami su ⬆
+    </button>
+
+    <script>
+      (function () {
+        const btn = document.querySelector(".back-to-top");
+        if (!btn) return;
+
+        function toggleButton() {
+          if (window.scrollY > 600) {
+            btn.classList.add("visible");
+          } else {
+            btn.classList.remove("visible");
+          }
+        }
+
+        btn.addEventListener("click", () => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
+        });
+
+        window.addEventListener("scroll", toggleButton);
+      })();
+    </script>
+    <script>
+      (function () {
+        const toggle = document.getElementById("menuToggle");
+        if (!toggle) return;
+
+        let overlay = document.querySelector(".menu-overlay");
+        if (!overlay) {
+          overlay = document.createElement("div");
+          overlay.className = "menu-overlay";
+          document.body.appendChild(overlay);
+        }
+
+        function openMenu() {
+          document.body.classList.add("menu-open");
+        }
+
+        function closeMenu() {
+          document.body.classList.remove("menu-open");
+        }
+
+        toggle.addEventListener("click", (e) => {
+          e.stopPropagation();
+          document.body.classList.toggle("menu-open");
+        });
+
+        overlay.addEventListener("click", closeMenu);
+
+        // chiudi se tocchi un link
+        document.querySelectorAll(".site-nav a").forEach((link) => {
+          link.addEventListener("click", closeMenu);
+        });
+      })();
+    </script>
   </body>
 </html>
