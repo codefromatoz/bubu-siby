@@ -471,34 +471,39 @@
 
     <script>
       (function () {
-        const toggle = document.getElementById("menuToggle");
-        if (!toggle) return;
+        const zone = document.querySelector(".band-mid.spin-zone");
+        const figure = document.querySelector(".mid-figure");
+        if (!zone || !figure) return;
 
-        let overlay = document.querySelector(".menu-overlay");
-        if (!overlay) {
-          overlay = document.createElement("div");
-          overlay.className = "menu-overlay";
-          document.body.appendChild(overlay);
+        let angle = 0;
+        let speed = 0;
+        let targetSpeed = 0;
+        let rafId = null;
+
+        function tick() {
+          // easing verso la velocità target
+          speed += (targetSpeed - speed) * 0.08;
+          angle += speed;
+          figure.style.transform = `rotate(${angle}deg)`;
+
+          rafId = requestAnimationFrame(tick);
         }
 
-        function openMenu() {
-          document.body.classList.add("menu-open");
+        function startSpin() {
+          targetSpeed = 3.2; // velocità hover
+          if (!rafId) tick();
         }
 
-        function closeMenu() {
-          document.body.classList.remove("menu-open");
+        function stopSpin() {
+          targetSpeed = 0; // rallenta fino a fermarsi
         }
 
-        toggle.addEventListener("click", (e) => {
-          e.stopPropagation();
-          document.body.classList.toggle("menu-open");
-        });
+        zone.addEventListener("mouseenter", startSpin);
+        zone.addEventListener("mouseleave", stopSpin);
 
-        overlay.addEventListener("click", closeMenu);
-
-        // chiudi se tocchi un link
-        document.querySelectorAll(".site-nav a").forEach((link) => {
-          link.addEventListener("click", closeMenu);
+        // sicurezza: ferma tutto se tab perde focus
+        window.addEventListener("blur", () => {
+          targetSpeed = 0;
         });
       })();
     </script>

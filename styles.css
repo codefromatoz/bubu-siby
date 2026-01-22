@@ -287,23 +287,33 @@ body {
   }
 }
 
-/* fase 1: lento */
-.band.band-mid.spin-zone:hover .mid-figure {
-  animation: spinWeird 2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+@keyframes spinSlowStop {
+  0% {
+    transform: rotate(var(--spin-angle, 0deg));
+  }
+  40% {
+    transform: rotate(calc(var(--spin-angle, 0deg) + 40deg));
+  }
+  70% {
+    transform: rotate(calc(var(--spin-angle, 0deg) + 60deg));
+  }
+  100% {
+    transform: rotate(calc(var(--spin-angle, 0deg) + 70deg));
+  }
 }
 
-/* fase 2: più veloce dopo 1.2s */
-.band.band-mid.spin-zone:hover .mid-figure {
-  animation-delay: 0s;
-}
+/* ============================
+   MID-CATS — ROTAZIONE FISICA
+   ============================ */
 
-.band.band-mid.spin-zone:hover .mid-figure.fast {
-  animation-duration: 1.8s;
-}
-
-/* fase 3: ancora più veloce dopo 2.8s */
-.band.band-mid.spin-zone:hover .mid-figure.faster {
-  animation-duration: 0.9s;
+.mid-figure {
+  display: block;
+  max-width: 420px;
+  margin: 0 auto;
+  transform-origin: center center;
+  transform: rotate(0deg);
+  transition: transform 0.9s ease-out; /* ← decelerazione naturale */
+  will-change: transform;
 }
 
 /* mobile safety */
