@@ -1173,20 +1173,27 @@ body {
     justify-content: center;
   }
 
-  /* -------- CODA NOTE FIX MOBILE -------- */
+  /* -------- CODA NOTE MOBILE FIX (NO CROP) -------- */
 
   .band-coda {
-    overflow: hidden; /* sicurezza extra */
+    overflow: visible;
+  }
+
+  .band-coda .wrap {
+    padding-left: 24px; /* ← più spazio a sinistra */
+    padding-right: 40px; /* ← più spazio a destra per compensare rotazione */
   }
 
   .coda-note {
-    transform: rotate(-2deg); /* niente spinta laterale */
     max-width: 260px;
     margin: 24px auto 0;
+    padding-right: 12px; /* ← aria interna anti-taglio */
+    transform: rotate(-2deg) translateX(-40px); /* ← vero shift a sinistra */
     font-size: 14px;
     line-height: 1.35;
-    opacity: 0.5;
+    opacity: 0.55;
     text-align: center;
+    pointer-events: none;
   }
 
   /* diario swipe affordance */
