@@ -1066,17 +1066,40 @@ body {
   }
 
   /* -------- DIARIO -------- */
+  /* -------- DIARIO MOBILE FIX -------- */
+
   .sticky-row.diary-carousel {
-    height: 220px;
+    height: 260px; /* un filo più alta */
+  }
+
+  .sticky-row.diary-carousel .sticky {
+    width: 92%;
+    max-width: 360px;
   }
 
   .sticky {
-    min-height: 180px;
-    padding: 22px 22px 28px;
+    padding: 24px 22px 30px;
   }
 
   .sticky-text {
     font-size: 22px;
+    line-height: 1.25;
+  }
+
+  /* spinge giù la coda */
+  .coda-strip {
+    margin-top: 24px;
+    max-width: 300px;
+  }
+
+  .coda-line {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+
+  /* evita sovrapposizioni */
+  .band-diary {
+    padding-bottom: 48px;
   }
 
   .sticky-day {
@@ -1096,10 +1119,6 @@ body {
 
   .coda-strip::before {
     display: none;
-  }
-
-  .coda-line {
-    font-size: 18px;
   }
 
   /* -------- PROFILI -------- */

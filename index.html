@@ -155,7 +155,7 @@
             <article class="sticky tilt-left" role="listitem">
               <h3 class="hand sticky-day">Recentemente</h3>
               <p class="hand sticky-text">
-                Siby ha corso da una stanza all’altra. Motivo ignoto.
+                Siby ha corso da una stanza all’altra. Motivo ignoto?
                 Probabilmente sì.
               </p>
             </article>
@@ -355,9 +355,11 @@
         if (!figure) return;
 
         let startX = 0;
+        let startY = 0;
         let currentRotation = 0;
         let isDragging = false;
         let canMeow = true;
+        let hasExceededThreshold = false;
 
         const meows = [
           new Audio("audio/meow1.mp3"),
@@ -365,52 +367,71 @@
           new Audio("audio/meow3.mp3"),
         ];
 
-        meows.forEach((m) => (m.volume = 0.4));
+        meows.forEach((m) => (m.volume = 0.35));
 
         function playRandomMeow() {
           if (!canMeow) return;
 
           const sound = meows[Math.floor(Math.random() * meows.length)];
           sound.currentTime = 0;
-          sound.play();
+          sound.play().catch(() => {});
 
           canMeow = false;
-          setTimeout(() => (canMeow = true), 1200); // cooldown 1.2s
+          setTimeout(() => (canMeow = true), 1200);
         }
 
         figure.addEventListener("touchstart", (e) => {
-          isDragging = true;
           startX = e.touches[0].clientX;
-          figure.classList.add("dragging");
-
-          playRandomMeow(); // ← primo miagolio subito
+          startY = e.touches[0].clientY;
+          isDragging = false;
+          hasExceededThreshold = false;
         });
 
         figure.addEventListener("touchmove", (e) => {
-          if (!isDragging) return;
-
           const currentX = e.touches[0].clientX;
-          const deltaX = currentX - startX;
+          const currentY = e.touches[0].clientY;
 
-          const rotation = currentRotation + deltaX * 0.3;
+          const deltaX = currentX - startX;
+          const deltaY = currentY - startY;
+
+          // se movimento verticale > orizzontale → scroll normale
+          if (Math.abs(deltaY) > Math.abs(deltaX)) {
+            return;
+          }
+
+          // soglia minima prima di "agganciare" la rotazione
+          if (!hasExceededThreshold && Math.abs(deltaX) < 18) return;
+
+          hasExceededThreshold = true;
+          isDragging = true;
+
+          // più pesante e più lenta
+          const rotation = currentRotation + deltaX * 0.18;
           figure.style.transform = `rotate(${rotation}deg)`;
 
-          if (Math.abs(deltaX) > 60) {
-            playRandomMeow(); // ← miagolio extra se li giri tanto
+          // miagolio solo se giri davvero tanto
+          if (Math.abs(deltaX) > 80) {
+            playRandomMeow();
           }
+
+          // blocca scroll SOLO quando stai ruotando
+          e.preventDefault();
         });
 
         figure.addEventListener("touchend", () => {
-          isDragging = false;
+          if (!isDragging) return;
 
           const transform = figure.style.transform;
           const match = transform.match(/rotate\(([-\d.]+)deg\)/);
           if (match) currentRotation = parseFloat(match[1]);
 
+          // ritorno morbido
+          figure.style.transition = "transform 0.35s ease";
+          figure.style.transform = "";
+
           setTimeout(() => {
-            figure.style.transform = "";
-            figure.classList.remove("dragging");
-          }, 200);
+            figure.style.transition = "";
+          }, 350);
         });
       })();
     </script>
